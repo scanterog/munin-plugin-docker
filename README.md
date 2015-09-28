@@ -22,6 +22,7 @@ The munin data type must be defined as "derive" because the CPU usage is a cumul
 4. Create symbolic links.
   
   ```
+  cd /etc/munin/plugins/
   ln -s /usr/share/munin/plugins/docker_memory docker_memory
   ln -s /usr/share/munin/plugins/docker_cpu docker_cpu
   ```
