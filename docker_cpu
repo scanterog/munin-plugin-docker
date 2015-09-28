@@ -47,6 +47,8 @@ for my $i (1 .. $#containers)
    my @fields = split / +/, $containers[$i];
    my $id = $fields[0];
    my $name = $fields[$#fields];
+   # manage container name containing arithmetic operators. E.g, my-container.
+   $name =~ s/[-\+*\/]/_/;
    open(my $file, '<', "/sys/fs/cgroup/cpuacct/docker/$id/cpuacct.usage") or die "Unable to open file, $!";
    my $total_cpu_ns = <$file>;
    $total_cpu_ns =~ s/\s+$//;
@@ -90,7 +92,7 @@ if (defined $ARGV[0] and $ARGV[0] eq "config")
 
 foreach(@result)
 {
-   $tcpu = ($$_{'total_cpu_ns'}*100); #to percentage
+   $tcpu = ($$_{'total_cpu_ns'}*100); #*100 to get value in percentage
    print "$$_{'name'}.value $tcpu\n";
 }
 
