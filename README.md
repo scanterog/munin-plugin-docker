@@ -19,11 +19,17 @@ The munin data type must be defined as "derive" because the CPU usage is a cumul
 1. Install the munin-node in the docker server. For more information check the following URL: [munin guide](http://guide.munin-monitoring.org/en/latest/installation/install.html).
 2. Copy the *docker_cpu* and *docker_memory* plugins to the munin plugin folder: /usr/share/munin/plugins.
 3. Change permission to the plugins: `chmod 755 docker_*`
-4. Give root privilege to the docker plugin. Root privilege is required for munin to execute the docker command.
+4. Create symbolic links.
+  
+  ```
+  ln -s /usr/share/munin/plugins/docker_memory docker_memory
+  ln -s /usr/share/munin/plugins/docker_cpu docker_cpu
+  ```
+5. Give root privilege to the docker plugin. Root privilege is required for munin to execute the docker command.
   1. Create a new file named "docker" inside the folder /etc/munin/plugin-conf.d/
   2. Insert the following content in the new docker file:
   ```
   [docker_*]
   user root
   ```
-5. Restart the munin-node service.
+6. Restart the munin-node service.
