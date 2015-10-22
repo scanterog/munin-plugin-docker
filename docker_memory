@@ -47,6 +47,10 @@ for my $i (1 .. $#containers)
    my @fields = split / +/, $containers[$i];
    my $id = $fields[0];
    my $name = $fields[$#fields];
+   # manage container name containing arithmetic operators and dots. E.g, my-container.
+   $name =~ s/[-\+*\/\.]/_/g;
+   # truncate container name with "," character.
+   $name =~ s/,.*//g;
    open(my $file, '<', "/sys/fs/cgroup/memory/docker/$id/memory.usage_in_bytes") or die "Unable to open file, $!";
    my $memory_bytes = <$file>;
    $memory_bytes =~ s/\s+$//;
