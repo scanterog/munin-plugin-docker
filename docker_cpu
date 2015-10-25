@@ -39,6 +39,19 @@ GPLv3
 
 =cut
 
+my $dep=`which docker`;
+
+if ( defined $ARGV[0] and $ARGV[0] eq "autoconf" ) {
+   if ($dep) {
+      print "yes\n";
+      exit 0;
+   }
+   else{
+      print "no (Docker has not been found)\n";
+      exit 0;
+   }
+}
+
 my @containers = split "\n" , `/usr/bin/docker ps --no-trunc=true`;
 my $result;
 
