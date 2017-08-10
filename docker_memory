@@ -70,6 +70,16 @@ for my $i (1 .. $#containers)
    {
       my $memory_bytes = <$file>;
       $memory_bytes =~ s/\s+$//;
+      if (open(my $file, '<', "/sys/fs/cgroup/memory/docker/$id/memory.stat"))
+      {
+         my %stat;
+         while (my $line = <$file>)
+         {
+            $line =~ m/^(\w+) (\d+)$/;
+            $stat{$1} = $2;
+         }
+         $memory_bytes -= $stat{"cache"};
+      }
       push @result, {'name'=>$name, 'memory_bytes'=>$memory_bytes};
    }
 }
